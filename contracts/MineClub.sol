@@ -28,6 +28,11 @@ contract MineClub is ERC1155Supply, Ownable {
         validTypeIds[_typeId] = _valid;
     }
 
+    function withdraw() external onlyOwner {
+        uint256 balance = address(this).balance;
+        payable(_msgSender()).call{value: balance}("");
+    }
+
     /**
      * public
      */

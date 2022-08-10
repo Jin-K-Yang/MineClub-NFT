@@ -72,7 +72,7 @@ describe("MineClub", function () {
       await expect(mineclub.mint(0, 3, { value: ethers.utils.parseEther("3.0") })).to.be.revertedWith("Purchase: Exceed the limitation of per transaction");
     })
 
-    //It will take 40 seconds to test so I comment it
+    // It will take 40 seconds to test so I comment it
     it("Should be reverted because the limmitation of total supply", async function () {
       await mineclub.setValidTypeId(0, true);
       for (let i = 0; i < 2500; i++) {
@@ -80,6 +80,25 @@ describe("MineClub", function () {
       }
 
       await expect(mineclub.mint(0, 1, { value: ethers.utils.parseEther("1.0") })).to.be.revertedWith("Purchase: Max total supply exceeded");
+    })
+  })
+
+  describe("Withdraw", function () {
+    it("Should withdraw fund by the owner", async function () {
+      await mineclub.setValidTypeId(0, true);
+      await mineclub.mint(0, 2, { value: ethers.utils.parseEther("2.0") });
+
+      const ownerBalanceBeforeWithdraw = ethers.utils.formatEther(await mineclub.provider.getBalance(owner.address),);
+
+      await mineclub.withdraw();
+
+      const ownerBalanceAfterWithdraw = ethers.utils.formatEther(await mineclub.provider.getBalance(owner.address),);
+
+      expect(parseInt(ownerBalanceAfterWithdraw) > parseInt(ownerBalanceBeforeWithdraw));
+    })
+
+    it("Should be reverted because the caller is not owner", async function () {
+      await expect(mineclub.connect(addr1).withdraw()).to.be.revertedWith("Ownable: caller is not the owner");
     })
   })
 });
