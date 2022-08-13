@@ -12,7 +12,7 @@ contract MineClub is ERC1155Supply, Ownable {
     mapping(uint256 => bool) public validTypeIds;
 
     uint256 maxPerTx = 2;
-    uint256 mintPrice = 10**18;
+    uint256 mintPrice = 10**17;
     uint256 maxTotalSupply = 5000;
 
     constructor() ERC1155("") {}
@@ -37,7 +37,7 @@ contract MineClub is ERC1155Supply, Ownable {
      * public
      */
     function mint(uint256 _id, uint256 _quantity) external payable {
-        require(valid(_id), "Valid: Not valid id");
+        require(validTypeIds[_id], "Valid: Not valid id");
 
         require(
             msg.value == _quantity * mintPrice,
@@ -58,12 +58,8 @@ contract MineClub is ERC1155Supply, Ownable {
     }
 
     function uri(uint256 id) public view override returns (string memory) {
-        require(valid(id), "Valid: Not valid id");
+        require(validTypeIds[id], "Valid: Not valid id");
 
         return string(abi.encodePacked(baseURI, id.toString()));
-    }
-
-    function valid(uint256 id) public view returns (bool) {
-        return validTypeIds[id];
     }
 }

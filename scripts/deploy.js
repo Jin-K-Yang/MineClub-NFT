@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const baseURI = "ipfs://test/";
+  const baseURI = "ipfs://QmXWCvqNZugQudMjThU2PHhfhS5QszQWWyVpKQUzSKZrVV/";
 
   // We get the contract to deploy
   const MineClub = await hre.ethers.getContractFactory("MineClub");
@@ -11,7 +11,7 @@ async function main() {
   console.log("MineClub deployed to:", mineclub.address);
 
   await mineclub.setValidTypeId(0, true);
-  console.log("Valid Type Id 0:", await mineclub.valid(0));
+  console.log("Valid Type Id 0:", await mineclub.validTypeIds(0));
 
   await mineclub.setBaseURI(baseURI);
   console.log("Base URI:", await mineclub.uri(0));

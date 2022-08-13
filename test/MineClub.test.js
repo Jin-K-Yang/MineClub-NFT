@@ -21,8 +21,8 @@ describe("MineClub", function () {
     it("Should set the valid type id", async function () {
       await mineclub.setValidTypeId(0, true);
 
-      expect(await mineclub.valid(0)).to.equal(true);
-      expect(await mineclub.valid(1)).to.equal(false);
+      expect(await mineclub.validTypeIds(0)).to.equal(true);
+      expect(await mineclub.validTypeIds(1)).to.equal(false);
     })
 
     it("Should be reverted because of the caller is not owner", async function () {
@@ -52,41 +52,41 @@ describe("MineClub", function () {
   describe("Mint", function () {
     it("Should mint VIP pass", async function () {
       await mineclub.setValidTypeId(0, true);
-      await mineclub.mint(0, 1, { value: ethers.utils.parseEther("1.0") });
+      await mineclub.mint(0, 1, { value: ethers.utils.parseEther("0.1") });
 
       expect(await mineclub.balanceOf(owner.address, 0)).to.equal(1);
       expect(await mineclub.totalSupply(0)).to.equal(1);
     });
 
     it("Should be reverted because id is not valid", async function () {
-      await expect(mineclub.mint(0, 1, { value: ethers.utils.parseEther("1.0") })).to.be.revertedWith("Valid: Not valid id");
+      await expect(mineclub.mint(0, 1, { value: ethers.utils.parseEther("0.1") })).to.be.revertedWith("Valid: Not valid id");
     })
 
     it("Should be reverted because of the incorrect payment", async function () {
       await mineclub.setValidTypeId(0, true);
-      await expect(mineclub.mint(0, 2, { value: ethers.utils.parseEther("1.1") })).to.be.revertedWith("Purchase: Incorrect payment");
+      await expect(mineclub.mint(0, 2, { value: ethers.utils.parseEther("0.09") })).to.be.revertedWith("Purchase: Incorrect payment");
     });
 
     it("Should be reverted because of the limitation of per transaction", async function () {
       await mineclub.setValidTypeId(0, true);
-      await expect(mineclub.mint(0, 3, { value: ethers.utils.parseEther("3.0") })).to.be.revertedWith("Purchase: Exceed the limitation of per transaction");
+      await expect(mineclub.mint(0, 3, { value: ethers.utils.parseEther("0.3") })).to.be.revertedWith("Purchase: Exceed the limitation of per transaction");
     })
 
     // It will take 40 seconds to test so I comment it
     it("Should be reverted because the limmitation of total supply", async function () {
       await mineclub.setValidTypeId(0, true);
       for (let i = 0; i < 2500; i++) {
-        await mineclub.mint(0, 2, { value: ethers.utils.parseEther("2.0") })
+        await mineclub.mint(0, 2, { value: ethers.utils.parseEther("0.2") })
       }
 
-      await expect(mineclub.mint(0, 1, { value: ethers.utils.parseEther("1.0") })).to.be.revertedWith("Purchase: Max total supply exceeded");
+      await expect(mineclub.mint(0, 1, { value: ethers.utils.parseEther("0.1") })).to.be.revertedWith("Purchase: Max total supply exceeded");
     })
   })
 
   describe("Withdraw", function () {
     it("Should withdraw fund by the owner", async function () {
       await mineclub.setValidTypeId(0, true);
-      await mineclub.mint(0, 2, { value: ethers.utils.parseEther("2.0") });
+      await mineclub.mint(0, 2, { value: ethers.utils.parseEther("0.2") });
 
       const ownerBalanceBeforeWithdraw = ethers.utils.formatEther(await mineclub.provider.getBalance(owner.address),);
 
