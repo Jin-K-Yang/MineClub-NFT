@@ -3,6 +3,7 @@ require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 require('solidity-coverage');
 require('dotenv').config()
+require("hardhat-gas-reporter");
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY;
 const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
