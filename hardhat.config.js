@@ -6,7 +6,7 @@ require('dotenv').config()
 require("hardhat-gas-reporter");
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY;
-const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 module.exports = {
@@ -15,15 +15,15 @@ module.exports = {
     timeout: 100000,
   },
   networks: {
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [RINKEBY_PRIVATE_KEY]
+    goerli: {
+      url: `https://goerli.infura.io/v3/${INFURA_API_KEY}`,
+      accounts: [PRIVATE_KEY]
     }
   },
   // verify contract
   etherscan: {
     apiKey: {
-      rinkeby: ETHERSCAN_API_KEY
+      goerli: ETHERSCAN_API_KEY
     }
   },
 };
