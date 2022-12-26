@@ -9,10 +9,10 @@ npx hardhat coverage
 
 # Deploy
 ```
-npx hardhat run --network rinkeby scripts/deploy.js
+npx hardhat run --network goerli scripts/deploy.js
 ``` 
 
 # Verify on Etherscan
 ```
-npx hardhat verify --network rinkeby CONTRACT_ADDRESS
+npx hardhat verify --network goerli CONTRACT_ADDRESS
 ```
